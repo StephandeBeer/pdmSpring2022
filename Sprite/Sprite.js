@@ -1,8 +1,9 @@
-let character0, character1, character2, character3, character4;
+let character0, character2, character3, character4;
+let character1;
 
 function preload() {
   spelunkyGuy = loadImage("SpelunkyGuy.png");
-  //goldSheet = loadImage("");
+  goldenMonk = loadImage("GoldenMonk.png");
   //blueSheet = loadImage("");
   //meatSheet = loadImage("");
   //greenSheet = loadImage("");
@@ -11,25 +12,30 @@ function preload() {
 function setup() {
   createCanvas(1500, 960);
   imageMode(CENTER);
-  character0 = new Character(spelunkyGuy, 0, 300);  
+  character0 = new Character(spelunkyGuy, 0, 300);
+  character1 = new Character(goldenMonk, 100, 200);  
 }
 
 function keyPressed() {
   if(keyCode == RIGHT_ARROW){
     character0.go(1);
+    character1.go(1);
   }
   else if(keyCode == LEFT_ARROW){
     character0.go(-1);
+    character1.go(-1);
   }
 }
 
 function keyReleased() {
   character0.stop();
+  character1.stop();
 }
 
 function draw() {
   background(255, 255, 255);
   character0.draw();
+  character1.draw();
 }
 
 class Character{
@@ -46,7 +52,7 @@ class Character{
     translate(this.tx, this.ty);
     scale(this.direct, 1);
 
-    if(move == 0 ){
+    if(this.move == 0 ){
       image(this.characterSheet, 0, 0, 200, 200, 0, 0, 80, 80);
     }
 
@@ -63,7 +69,7 @@ class Character{
 
   go(direction){
     this.move = direction;
-    direct = direction;
+    this.direct = direction;
     id = 3;
   }
 
