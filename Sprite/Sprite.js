@@ -68,11 +68,11 @@ class Character{
     scale(this.direct, 1);
 
     if(this.move == 0 ){
-      image(this.characterSheet, 0, 0, 200, 200, 0, 0, 80, 80);
+      image(this.characterSheet, 0, 0, 150, 150, 0, 0, 80, 80);
     }
 
     else{
-      image(this.characterSheet, 0, 0, 200, 200, 80 * (this.id + 1), 0, 80, 80);
+      image(this.characterSheet, 0, 0, 150, 150, 80 * (this.id + 1), 0, 80, 80);
     }
     
     if(frameCount % 7 == 0){
