@@ -1,42 +1,56 @@
-let character0, character2, character3, character4;
-let character1;
+let character0, character1, character2, character3, character4;
 
 function preload() {
   spelunkyGuy = loadImage("SpelunkyGuy.png");
   goldenMonk = loadImage("GoldenMonk.png");
-  //blueSheet = loadImage("");
-  //meatSheet = loadImage("");
-  //greenSheet = loadImage("");
+  blue = loadImage("Blue.png");
+  meatBoy = loadImage("MeatBoy.png");
+  green = loadImage("Green.png");
 }
 
 function setup() {
-  createCanvas(1500, 960);
+  createCanvas(1900, 900);
   imageMode(CENTER);
 
   character0 = new Character(spelunkyGuy, 0, 300);
-  character1 = new Character(goldenMonk, 300, 300);  
+  character1 = new Character(goldenMonk, 100, 300);
+  character2 = new Character(blue, 200, 300);
+  character3 = new Character(meatBoy, 300, 300)
+  character4 = new Character(green, 400, 300)
 }
 
 function keyPressed() {
   if(keyCode == RIGHT_ARROW){
     character0.go(1);
     character1.go(1);
+    character2.go(1);
+    character3.go(1);
+    character4.go(1);
   }
   else if(keyCode == LEFT_ARROW){
     character0.go(-1);
     character1.go(-1);
+    character2.go(-1);
+    character3.go(-1);
+    character4.go(-1);
   }
 }
 
 function keyReleased() {
   character0.stop();
   character1.stop();
+  character2.stop();
+  character3.stop();
+  character4.stop();
 }
 
 function draw() {
-  background(255, 255, 255);
+  background('lightgray');
   character0.draw();
   character1.draw();
+  character2.draw();
+  character3.draw();
+  character4.draw();
 }
 
 class Character{
