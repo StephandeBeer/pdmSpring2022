@@ -12,11 +12,11 @@ function setup() {
   createCanvas(1900, 900);
   imageMode(CENTER);
 
-  character0 = new Character(spelunkyGuy, 0, 300);
-  character1 = new Character(goldenMonk, 100, 300);
-  character2 = new Character(blue, 200, 300);
-  character3 = new Character(meatBoy, 300, 300)
-  character4 = new Character(green, 400, 300)
+  character0 = new Character(spelunkyGuy, random(80, 1820), random(80, 820));
+  character1 = new Character(goldenMonk, random(80, 1820), random(80, 820));
+  character2 = new Character(blue, random(80, 1820), random(80, 820));
+  character3 = new Character(meatBoy, random(80, 1820), random(80, 820))
+  character4 = new Character(green, random(80, 1820), random(80, 820))
 }
 
 function keyPressed() {
