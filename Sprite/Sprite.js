@@ -1,13 +1,51 @@
 /// < reference path="./p5.global-mode.d.ts" / >
+let spunkSheet;
+let x = 0;
+let tx = 0, ty = 300;
+
+function preload() {
+  spunkSheet = loadImage("SpelunkyGuy.png");
+  //goldSheet = loadImage("");
+  //blueSheet = loadImage("");
+  //meatSheet = loadImage("");
+  //greenSheet = loadImage("");
+}
 
 function setup() {
-  createCanvas(1500, 850);
-  imageMode(CENTER);
-  
+  createCanvas(1500, 960);
+  imageMode(CENTER);  
+}
+
+function keyPressed() {
+  if(keyCode == RIGHT_ARROW){
+    move = 1;
+  }
+  else if(keyCode == LEFT_ARROW){
+    move = -1;
+  }
+}
+
+function keyReleased() {
+move = 0;
 }
 
 function draw() {
-  background(119, 242, 59);
-  square(210, 25, 150);
-  circle(100, 100, 150);
+  background(255, 255, 255);
+  translate(tx, ty);
+
+  if(move == 1){
+    image(spunkSheet, 0, 0, 200, 200, 80 * (x + 1), 0, 80, 80);
+  }
+  else if(move == -1){
+    scale(-1, 1);
+    image(spunkSheet, 0, 0, 200, 200, 80 * (x + 1), 0, 80, 80);
+  }
+  else{
+    image(spunkSheet, 0, 0, 200, 200, 0, 0, 80, 80);
+  }
+
+  if(frameCount % 7 == 0){
+    x = (x + 1) % 8;
+  }
+  tx += 2 * move;
 }
