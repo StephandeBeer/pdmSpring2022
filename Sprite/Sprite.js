@@ -1,6 +1,6 @@
 /// < reference path="./p5.global-mode.d.ts" / >
 let spunkSheet;
-let x = 0;
+let x = 0, direct = 1;
 let tx = 0, ty = 300;
 
 function preload() {
@@ -19,9 +19,11 @@ function setup() {
 function keyPressed() {
   if(keyCode == RIGHT_ARROW){
     move = 1;
+    direct = 1;
   }
   else if(keyCode == LEFT_ARROW){
     move = -1;
+    direct = -1;
   }
 }
 
@@ -32,12 +34,12 @@ move = 0;
 function draw() {
   background(255, 255, 255);
   translate(tx, ty);
+  scale(direct, 1);
 
   if(move == 1){
     image(spunkSheet, 0, 0, 200, 200, 80 * (x + 1), 0, 80, 80);
   }
   else if(move == -1){
-    scale(-1, 1);
     image(spunkSheet, 0, 0, 200, 200, 80 * (x + 1), 0, 80, 80);
   }
   else{
