@@ -12,8 +12,9 @@ function preload() {
 function setup() {
   createCanvas(1500, 960);
   imageMode(CENTER);
+
   character0 = new Character(spelunkyGuy, 0, 300);
-  character1 = new Character(goldenMonk, 100, 200);  
+  character1 = new Character(goldenMonk, 300, 300);  
 }
 
 function keyPressed() {
@@ -41,7 +42,7 @@ function draw() {
 class Character{
   constructor(sheet, X, Y){
     this.characterSheet = sheet;
-    this.x = 0;
+    this.id = 0;
     this.direct = 1;
     this.move = 0; 
     this.tx = X; 
@@ -57,11 +58,11 @@ class Character{
     }
 
     else{
-      image(this.characterSheet, 0, 0, 200, 200, 80 * (this.x + 1), 0, 80, 80);
+      image(this.characterSheet, 0, 0, 200, 200, 80 * (this.id + 1), 0, 80, 80);
     }
     
     if(frameCount % 7 == 0){
-      this.x = (this.x + 1) % 8;
+      this.id = (this.id + 1) % 8;
     }
     this.tx += 2 * this.move;
     pop();
@@ -70,7 +71,7 @@ class Character{
   go(direction){
     this.move = direction;
     this.direct = direction;
-    id = 3;
+    this.id = 3;
   }
 
   stop(){
