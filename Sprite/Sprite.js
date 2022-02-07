@@ -45,7 +45,7 @@ function keyReleased() {
 }
 
 function draw() {
-  background('lightgray');
+  background(255, 255, 255);
   character0.draw();
   character1.draw();
   character2.draw();
