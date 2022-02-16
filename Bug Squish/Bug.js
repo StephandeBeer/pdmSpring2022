@@ -53,11 +53,12 @@ class Character{
     rotate(this.angle);
 
     if(this.move == 0){
-      image(this.characterSheet, 0, 0, 150, 150, 123, 0, 123, 123);
+      image(this.characterSheet, 0, 0, 150, 150, 122, 0, 120, 120);
     }
 
+    //bug is 120 so move 122  
     else{
-      image(this.characterSheet, 0, 0, 150, 150, 123 * (this.id), 0, 123, 123);
+      image(this.characterSheet, 0, 0, 150, 150, 122 * (this.id), 0, 120, 120);
     }
     
     if(frameCount % 30 == 0){
