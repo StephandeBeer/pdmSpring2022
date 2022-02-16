@@ -13,17 +13,16 @@ function setup() {
 
 function keyPressed() {
   if(keyCode == RIGHT_ARROW){
-    bug.go(1);
-    //bug.r(PI/2);
+    bug.go(1, 0, PI/2);
   }
   else if(keyCode == LEFT_ARROW){
-    bug.go(-1);
+    bug.go(-1, 0, (3*PI)/2);
   }
   else if(keyCode == UP_ARROW){
-    //bug.r(0);
+    bug.go(0, -1, 0);
   }
   else if(keyCode == DOWN_ARROW){
-    //bug.r(PI);
+    bug.go(0, 1, PI);
   }
 }
 
@@ -40,8 +39,8 @@ class Character{
   constructor(sheet, X, Y, Rotate){
     this.characterSheet = sheet;
     this.id = 0;
-    this.direct = 1;
-    this.move = 0; 
+    this.moveX = 0; 
+    this.moveY = 0;
     this.tx = X; 
     this.ty = Y;
     this.angle = Rotate;
@@ -49,37 +48,33 @@ class Character{
   draw(){  
     push();  
     translate(this.tx, this.ty);
-    scale(this.direct, 1);
     rotate(this.angle);
 
-    if(this.move == 0){
-      image(this.characterSheet, 0, 0, 150, 150, 122, 0, 120, 120);
+    if(this.moveX == 0 && this.moveY == 0){
+      image(this.characterSheet, 0, 0, 150, 150, 122, 0, 122, 122);
     }
 
-    //bug is 120 so move 122  
     else{
-      image(this.characterSheet, 0, 0, 150, 150, 122 * (this.id), 0, 120, 120);
+      image(this.characterSheet, 0, 0, 150, 150, 122 * (this.id), 0, 122, 122);
     }
     
-    if(frameCount % 30 == 0){
+    if(frameCount % 2 == 0){
       this.id = (this.id + 1) % 6;
     }
-    this.tx += 2 * this.move;
+    this.tx += 2 * this.moveX;
+    this.ty += 2 * this.moveY;
     pop();
   }
 
-  go(direction){
-    this.move = direction;
-    this.direct = direction;
-    this.id = 3;
-  }
-
-  r(degree){
+  go(directionX, directionY, degree){
+    this.moveX = directionX;
+    this.moveY = directionY;
     this.angle = degree;
   }
 
   stop(){
-    this.move = 0;
+    this.moveX = 0;
+    this.moveY = 0;
   }
   
 }
