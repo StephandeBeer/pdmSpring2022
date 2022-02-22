@@ -1,6 +1,3 @@
-//const { Tone } = require("tone/build/esm/core/Tone");
-
-//let soundNew = new Tone.Player('Media/Retro.wav');
 let button1,button2,button3,button4, button5, slide, slide2, slide3;
 
 const sounds = new Tone.Players({
@@ -98,8 +95,4 @@ function draw() {
 
 function buttonSound(sound='clap') {
   sounds.player(sound).start();
-}
-
-function keyPressed(){
-  //ssounds.player('clap').start();
 }
