@@ -17,52 +17,8 @@ const synth = new Tone.Synth({
 }
 });
 
-var bgSynth = new Tone.DuoSynth({"vibratoAmount"  : 0.5 ,
-"vibratoRate"  : 5 ,
-"harmonicity"  : 1.5 ,
-"voice0"  : {
-  "volume"  : -10 ,
-  "portamento"  : 0 ,
-  "oscillator"  : {
-      "type"  : "sine"
-  }  ,
-  "filterEnvelope"  : {
-    "attack"  : 0.01 ,
-    "decay"  : 0 ,
-    "sustain"  : 1 ,
-    "release"  : 0.5
-  }  ,
-  "envelope"  : {
-    "attack"  : 0.01 ,
-    "decay"  : 0 ,
-    "sustain"  : 1 ,
-    "release"  : 0.5
-  }
-}  ,
-"voice1"  : {
-  "volume"  : -20 ,
-  "portamento"  : 0 ,
-  "oscillator"  : {
-      "type"  : "sine"
-  }  ,
-  "filterEnvelope"  : {
-    "attack"  : 0.01 ,
-    "decay"  : 0 ,
-    "sustain"  : 1 ,
-    "release"  : 0.5
-  }  ,
-  "envelope"  : {
-    "attack"  : 0.01 ,
-    "decay"  : 0 ,
-    "sustain"  : 1 ,
-    "release"  : 0.5
-  }
-  }});
-
-
 let gain = new Tone.Gain(0.2).toDestination();
 synth.connect(gain);
-
 
 function setup() {
   createCanvas(800, 800); 
