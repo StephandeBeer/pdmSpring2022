@@ -1,9 +1,75 @@
 let mouseColor;
+let music = false;
+let bgSynth = new Tone.DuoSynth({
+  "vibratoAmount"  : 0.5 ,
+	"vibratoRate"  : 5 ,
+	"harmonicity"  : 1.5 ,
+	"voice0"  : {
+		"volume"  : -10 ,
+		"portamento"  : 0 ,
+		"oscillator"  : {
+		    "type"  : "sine"
+		}  ,
+		"filterEnvelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}  ,
+		"envelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}
+	}  ,
+	"voice1"  : {
+		"volume"  : -20 ,
+		"portamento"  : 0 ,
+		"oscillator"  : {
+		    "type"  : "sine"
+		}  ,
+		"filterEnvelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}  ,
+		"envelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}
+  }
+});
+bgSynth.toDestination();
+// let pattern = new Tone.Pattern(function(time, note){
+//   bgSynth.triggerAttackRelease(note, 0.25, time);
+// }, ["G2", "D3", "B4", "A4"]);
+var pattern = new Tone.Pattern(function(time, note){
+  bgSynth.triggerAttackRelease(note, '16n', time);
+  print(note);
+}, ["G3", "D4", "B4", "A4", "B4", "D4","B4","D4"]);
 
+function soundStartStop(){
+  if(music){
+    Tone.Transport.stop();
+    music = false;
+  }
+  else if (!music){
+    Tone.Transport.start();
+    music = true;
+  }
+}
 function setup() {
   createCanvas(1500, 850);
   background('lightgray');
   mouseColor = color('lightgray');
+  Tone.start();
+  pattern.start(0.1);
+  Tone.Transport.bpm.value = 180;
+  soundStartStop();
 }
 
 function draw() {
@@ -70,8 +136,10 @@ function draw() {
     } 
   }
 
+  
   // Click / Drag detection
   if(mouseIsPressed){
+    soundStartStop();
     mousePressed();
     fill(mouseColor);    
     if(mouseX > 55 || mouseY > 550 ){
