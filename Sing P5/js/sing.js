@@ -73,15 +73,15 @@ function keyPressed() {
 function setup() {
   createCanvas(1500, 850);
   background('lightgray');
+  textSize(45);
+  textAlign(CENTER, CENTER);
   fill('Darkgray')
   text('Click anywhere to start', 650, 25);
   text('Use Space to Pause/Play music', 650, 65);
   mouseColor = color('lightgray');
   Tone.start();
   pattern.start(0.1);
-  Tone.Transport.bpm.value = 180;
-  textSize(45);
-  textAlign(CENTER, CENTER);
+  Tone.Transport.bpm.value = 200;
 }
 
 function draw() {
@@ -148,10 +148,13 @@ function draw() {
     } 
   }
 
- 
+  if(!mouseIsPressed){
+    Tone.Transport.bpm.value = 200;
+  }
   
   // Click / Drag detection
   if(mouseIsPressed){
+    Tone.Transport.bpm.value = 120;
     if(noClickyet){
       soundStartStop();
       noClickyet = false;
