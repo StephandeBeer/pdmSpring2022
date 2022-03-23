@@ -1,5 +1,5 @@
 let mouseColor;
-let music = false;
+let music = false, noClickyet = true;
 let bgSynth = new Tone.DuoSynth({
   "vibratoAmount"  : 0.5 ,
 	"vibratoRate"  : 5 ,
@@ -44,13 +44,15 @@ let bgSynth = new Tone.DuoSynth({
   }
 });
 bgSynth.toDestination();
-// let pattern = new Tone.Pattern(function(time, note){
-//   bgSynth.triggerAttackRelease(note, 0.25, time);
-// }, ["G2", "D3", "B4", "A4"]);
+
 var pattern = new Tone.Pattern(function(time, note){
   bgSynth.triggerAttackRelease(note, '16n', time);
   print(note);
-}, ["G3", "D4", "B4", "A4", "B4", "D4","B4","D4"]);
+}, ["G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
+    "G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",]);
 
 function soundStartStop(){
   if(music){
@@ -62,14 +64,24 @@ function soundStartStop(){
     music = true;
   }
 }
+function keyPressed() {
+  if(keyCode == 32){
+    soundStartStop();
+  }
+}
+
 function setup() {
   createCanvas(1500, 850);
   background('lightgray');
+  fill('Darkgray')
+  text('Click anywhere to start', 650, 25);
+  text('Use Space to Pause/Play music', 650, 65);
   mouseColor = color('lightgray');
   Tone.start();
   pattern.start(0.1);
   Tone.Transport.bpm.value = 180;
-  soundStartStop();
+  textSize(45);
+  textAlign(CENTER, CENTER);
 }
 
 function draw() {
@@ -136,10 +148,14 @@ function draw() {
     } 
   }
 
+ 
   
   // Click / Drag detection
   if(mouseIsPressed){
-    soundStartStop();
+    if(noClickyet){
+      soundStartStop();
+      noClickyet = false;
+    }
     mousePressed();
     fill(mouseColor);    
     if(mouseX > 55 || mouseY > 550 ){
