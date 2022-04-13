@@ -7,7 +7,7 @@ Code by Jesse Allison -2019
 // Serial port global variables
 
 let serialPDM;                             // Variable to hold instance of serialport library
-let portName = '/dev/tty.usbmodem1401';    // Fill in your serial port name here
+let portName = 'COM4';    // Fill in your serial port name here
 
 let sensors;
 
@@ -25,7 +25,7 @@ function setup() {
     // Alias for the sensor Data . You can also just use serialPDM.sensorData...
   sensors = serialPDM.sensorData;
   
-  createCanvas(800,600);
+  createCanvas(1600,900);
   
 }
 
@@ -43,9 +43,9 @@ function keyReleased() {
 
 function mouseDragged() {
   ellipse(mouseX, mouseY, 15, 15);
-  let fade = Math.floor(map(mouseY,0,height,0,255, true));
+  //let fade = Math.floor(map(mouseY,0,height,0,255, true));
   
-  serialPDM.transmit('fade',fade);
+  //serialPDM.transmit('fade',fade);
   
   // prevent default
   return false;
@@ -56,17 +56,20 @@ function mouseDragged() {
 function draw(){
   background(255);
   textSize(32);
+ 
+  
+  //text("pressure: "+ sensors.pressure, 10, 120);
+  
+  let circlePosition = map(0.25, 0, 1, 30, width-30);
+  drawCircle(circlePosition, 300, 400 + 2);
   fill(32, 140, 110);
   text("a0: "+ sensors.a0, 10, 30);
-  text("p7: "+ sensors.p7, 10, 80);
-  text("pressure: "+ sensors.pressure, 10, 120);
-  
-  let circlePosition = map(sensors.float0, 0, 1, 30, width-30);
-  drawCircle(circlePosition, 300, sensors.pressure + 2);
+  text("float0: "+ sensors.float0, 10, 80);
 }
 
 
 function drawCircle(x,y,size){
-  fill("purple");
+  let color = parseInt(sensors.float0 * 255);
+  fill(color, 50, 100);
   ellipse(x, y, size);
 }
