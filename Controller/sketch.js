@@ -6,116 +6,75 @@ let mouseColor;
 let music = false, noClickyet = true;
 let portName = 'COM4';
 
-let decay = 0;
-
-const pianoetta = new Tone.Synth({
-  "oscillator": {
-      "type": "square"
-  },
-  "filter": {
-      "Q": 2,
-      "type": "lowpass",
-      "rolloff": -12
-  },
-  "envelope": {
-      "attack": 0.005,
-      "decay": 55,
-      "sustain": 0,
-      "release": 0.45
-  },
-  "filterEnvelope": {
-      "attack": 0.001,
-      "decay": 0.32,
-      "sustain": 0.9,
-      "release": 3,
-      "baseFrequency": 700,
-      "octaves": 2.3
+let bgSynth = new Tone.DuoSynth({
+  "vibratoAmount"  : 0.5 ,
+	"vibratoRate"  : 5 ,
+	"harmonicity"  : 1.5 ,
+	"voice0"  : {
+		"volume"  : -10 ,
+		"portamento"  : 0 ,
+		"oscillator"  : {
+		    "type"  : "sine"
+		}  ,
+		"filterEnvelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}  ,
+		"envelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}
+	}  ,
+	"voice1"  : {
+		"volume"  : -20 ,
+		"portamento"  : 0 ,
+		"oscillator"  : {
+		    "type"  : "sine"
+		}  ,
+		"filterEnvelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}  ,
+		"envelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}
   }
 });
+bgSynth.toDestination();
 
-let keys = {
-  'a' : 'A3',
-  's' : 'B3',
-  'd' : 'C4',
-  'f' : 'D4',
-  'g' : 'E4',
-  'h' : 'F4',
-  'j' : 'G4',
-  'k' : 'A4',
+var pattern = new Tone.Pattern(function(time, note){
+  bgSynth.triggerAttackRelease(note, '16n', time);
+  print(note);
+}, ["G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
+    "G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",]);
+
+ function soundStartStop(){
+  if(music){
+    Tone.Transport.stop();
+    music = false;
+  }
+  else if (!music){
+    Tone.Transport.start();
+    music = true;
+  }
 }
-
-const verb = new Tone.Reverb(0.05).toDestination();
-pianoetta.connect(verb);
-
-// let bgSynth = new Tone.DuoSynth({
-//   "vibratoAmount"  : 0.5 ,
-// 	"vibratoRate"  : 5 ,
-// 	"harmonicity"  : 1.5 ,
-// 	"voice0"  : {
-// 		"volume"  : -10 ,
-// 		"portamento"  : 0 ,
-// 		"oscillator"  : {
-// 		    "type"  : "sine"
-// 		}  ,
-// 		"filterEnvelope"  : {
-// 			"attack"  : 0.05 ,
-// 			"decay"  : 0 ,
-// 			"sustain"  : 1 ,
-// 			"release"  : 0.5
-// 		}  ,
-// 		"envelope"  : {
-// 			"attack"  : 0.05 ,
-// 			"decay"  : 0 ,
-// 			"sustain"  : 1 ,
-// 			"release"  : 0.5
-// 		}
-// 	}  ,
-// 	"voice1"  : {
-// 		"volume"  : -20 ,
-// 		"portamento"  : 0 ,
-// 		"oscillator"  : {
-// 		    "type"  : "sine"
-// 		}  ,
-// 		"filterEnvelope"  : {
-// 			"attack"  : 0.05 ,
-// 			"decay"  : 0 ,
-// 			"sustain"  : 1 ,
-// 			"release"  : 0.5
-// 		}  ,
-// 		"envelope"  : {
-// 			"attack"  : 0.05 ,
-// 			"decay"  : 0 ,
-// 			"sustain"  : 1 ,
-// 			"release"  : 0.5
-// 		}
-//   }
-// });
-// bgSynth.toDestination();
-
-// var pattern = new Tone.Pattern(function(time, note){
-//   bgSynth.triggerAttackRelease(note, '16n', time);
-//   print(note);
-// }, ["G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
-//     "G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
-//     "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
-//     "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
-//     "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",]);
-
-//  function soundStartStop(){
-//   if(music){
-//     Tone.Transport.stop();
-//     music = false;
-//   }
-//   else if (!music){
-//     Tone.Transport.start();
-//     music = true;
-//   }
-// }
-// function keyPressed() {
-//   if(keyCode == 32){
-//     soundStartStop();
-//   }
-// }
+function keyPressed() {
+  if(keyCode == 32){
+    soundStartStop();
+  }
+}
 
 function setup() {
   serialPDM = new PDMSerial(portName);
@@ -123,28 +82,6 @@ function setup() {
   sensors = serialPDM.sensorData;
   serialPDM.transmit('led',0); 
   
-
-
-  textSize(60);
-  textAlign(CENTER, CENTER);
-
-  decaySlide = createSlider(1, 5, 5, 1);
-  decaySlide.position(50, 160);
-  decaySlide.style('width', '580px');
-  decaySlide.mouseReleased(()=> {pianoetta.set({"envelope": {"decay": decaySlide.value()}})});
-
-  attackSlide = createSlider(0.001, 0.15, 0.005, 0.001);
-  attackSlide.position(50, 340);
-  attackSlide.style('width', '580px');
-  attackSlide.mouseReleased(()=> {pianoetta.set({"envelope": {"attack": attackSlide.value()}})});
-
-  reverb = createSlider(0.05, 5, 0.05, 0.05);
-  reverb.position(50, 520);
-  reverb.style('width', '580px');
-  reverb.mouseReleased(()=> {verb.decay = reverb.value();});
-
-
-
   createCanvas(1600,900);
 }
 
@@ -152,11 +89,6 @@ function keyPressed() {
   serialPDM.transmit('led',1);
   
   console.log(serialPDM.sensorsConnected());
-
-
-  let Audio = keys[key];
-  console.log(Audio);
-  pianoetta.triggerAttackRelease(Audio, "8n");
 }
 
 function keyReleased() {
@@ -172,24 +104,12 @@ function draw(){
   fill(32, 140, 110);
   text("Potentiometer: "+ sensors.a0, 10, 30);
   text("Color: " + color + " ," + 50 + " ," + 100, 10, 80);
-
-
-  
-  text('Use A - K keys to play notes', 400, 45);
-  text('Decay Slider', 345, 120);
-  text(decaySlide.value(), 345, 220);
-
-  text('Attack Slider', 345, 300);
-  text(attackSlide.value(), 345, 400);
-
-  text('Reverb Slider', 345, 490);
-  text(reverb.value(), 345, 580);
 }
 
 function drawCircle(x,y,size){
   color = parseInt(sensors.float0 * 255);
   fill(color, 50, 100);
- // ellipse(x, y, size);
+  ellipse(x, y, size);
 }
 
 
