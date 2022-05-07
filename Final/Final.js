@@ -1,10 +1,19 @@
+let block;
+
 function setup() {
   // put setup code here
-  createCanvas(400, 200);
+  createCanvas(1200, 800);
+  block = createSprite(20, 20, 80, 80);
 }
 
 function draw() {
   // put drawing code here
-  background(119, 242, 59);
-  //square(30, 20, 55);
+  background('lightgray');
+  if(keyDown('d')){
+    block.velocity.x = 5;
+  }
+  else{
+    block.velocity.x = 0;
+  }
+  drawSprites();
 }
