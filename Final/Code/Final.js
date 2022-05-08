@@ -95,7 +95,6 @@ function draw() {
     }
     if (keyWentDown('space') && canJump){
       player.velocity.y = JUMP;
-      //player.changeAnimation('jump');
     }
     else if(keyWentDown('space') && canDouble){
       canDouble = false;
@@ -105,12 +104,22 @@ function draw() {
     else if(keyDown('d')){
       player.velocity.x = 5;
       player.mirrorX(1);
-      player.changeAnimation('walk');
+      if(keyDown('space')){
+        player.changeAnimation('jump');
+      }
+      else{
+        player.changeAnimation('walk');
+      }
     }
     else if(keyDown('a')){
       player.velocity.x = -5;
       player.mirrorX(-1);
-      player.changeAnimation('walk');
+      if(keyDown('space')){
+        player.changeAnimation('jump');
+      }
+      else{
+        player.changeAnimation('walk');
+      }
     }
     else{
       player.velocity.x = 0;
