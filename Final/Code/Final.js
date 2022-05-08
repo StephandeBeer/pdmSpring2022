@@ -1,19 +1,19 @@
-let player, numPlat, platforms;
+let player, numPlat, platforms, meat;
 let GRAVITY = 1;
-let LIFES = 2;
+let LIFES = 5;
 let JUMP = -15;
 let canJump = false;
 let canDouble = false;
 let gameOver = false;
-let xCord = [150, 550, 950, 1400];
-let yCord = [500, 450, 500, 500];
-let isThick = [0, 1, 0, 1];
-let isHalf = [0, 0, 0, 1];
+let xCord = [150, 550, 950, 1400, 1850, 1420, 1250, 650, 100];
+let yCord = [500, 450, 500, 500, 400, 200, 0, -50, 0];
+let isThick = [0, 1, 0, 1, 0, 1, 1, 0, 0];
+let isHalf = [0, 0, 0, 1, 0, 1, 1, 0, 0];
 
 function preload() {
 	thickDirt = loadImage('Art/thickDirt.png');
 	thinDirt = loadImage('Art/thinDirt.png');
-	//bgImg = loadImage('assets/flappy_bg.png');
+  meatImg = loadImage('Art/Meat.png');
 }
 
 function createLevel(){
@@ -30,6 +30,8 @@ function createLevel(){
       platform.scale = 0.5;
     }
   }
+  meat = createSprite(50, -150);
+  meat.addImage(meatImg);
 }
 function setup() {
   createCanvas(1200, 800);
@@ -71,7 +73,7 @@ function draw() {
       die();
     }
 
-    if(player.collide(platforms)){
+    if(player.collide(platforms) && player.touching.bottom){
       player.velocity.x = 0;
       canJump = true;
       canDouble = true;
