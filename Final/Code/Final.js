@@ -1,4 +1,4 @@
-let player, numPlat, platforms, meat;
+let player, numPlat, platforms, meat, idle, walksheet, jumpsheet, idleanimation, walkanimation, jumpanimation;
 let GRAVITY = 1;
 let LIFES = 5;
 let JUMP = -15;
@@ -14,6 +14,13 @@ function preload() {
 	thickDirt = loadImage('Art/thickDirt.png');
 	thinDirt = loadImage('Art/thinDirt.png');
   meatImg = loadImage('Art/Meat.png');
+  idle = loadImage('Art/idle.png');
+  walksheet = loadSpriteSheet('Art/walk.png', 80, 64, 8);
+  jumpsheet = loadSpriteSheet('Art/jump.png', 80, 64, 8);
+
+  idleanimation = loadAnimation(idle);
+  walkanimation = loadAnimation(walksheet);
+  jumpanimation = loadAnimation(jumpsheet);
 }
 
 function createLevel(){
@@ -35,8 +42,11 @@ function createLevel(){
 }
 function setup() {
   createCanvas(1200, 800);
-  player = createSprite(40, 350, 80, 80);
-  player.shapeColor = color(206,32,41);
+  player = createSprite(40, 350, 80, 64);
+  player.addAnimation('idle', idleanimation);
+  player.addAnimation('walk', walkanimation);
+  player.addAnimation('jump', jumpanimation);
+  player.scale = 1.5;
   numPlat = xCord.length;
   platforms = new Group();
   createLevel();
@@ -74,25 +84,33 @@ function draw() {
     }
 
     if(player.collide(platforms) && player.touching.bottom){
+      player.changeAnimation('idle');
       player.velocity.x = 0;
       canJump = true;
       canDouble = true;
     }
     else{
+      player.changeAnimation('jump');
       player.velocity.y += GRAVITY;
     }
     if (keyWentDown('space') && canJump){
       player.velocity.y = JUMP;
+      //player.changeAnimation('jump');
     }
     else if(keyWentDown('space') && canDouble){
       canDouble = false;
       player.velocity.y = JUMP;
+      
     }
-    if(keyDown('d')){
+    else if(keyDown('d')){
       player.velocity.x = 5;
+      player.mirrorX(1);
+      player.changeAnimation('walk');
     }
     else if(keyDown('a')){
       player.velocity.x = -5;
+      player.mirrorX(-1);
+      player.changeAnimation('walk');
     }
     else{
       player.velocity.x = 0;
