@@ -9,12 +9,12 @@ const int potentPin = A2;  // potentiometer
 const int displayPins[7] = {3,5,4,6,2,7,8}; // define 
 
 byte displayLEDs[6][7] = { 
-        { 1,1,1,1,1,1,0 },  // = 0
-        { 0,1,1,0,0,0,0 },  // = 1
-        { 1,1,0,1,1,0,1 },  // = 2
-        { 1,1,1,1,0,0,1 },  // = 3
-        { 0,1,1,0,0,1,1 },  // = 4
-        { 1,0,1,1,0,1,1 },  // = 5     
+          { 0,0,0,0,0,1,0 },  // = 0
+          { 1,0,0,1,1,1,1 },  // = 1
+          { 0,0,1,0,0,0,1 },  // = 2
+          { 0,0,0,0,1,0,1 },  // = 3
+          { 1,0,0,1,1,0,0 },  // = 4
+          { 0,1,0,0,1,0,0 },  // = 5     
         }; 
 
 void writeNum(int digit){
@@ -54,7 +54,7 @@ void loop() {
   else{
     joyVal = 0;
   }
-  
+
   sensorValue = analogRead(potentPin);
   float sensorFloatValue = sensorValue/1023.0;
 
