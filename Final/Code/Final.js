@@ -1,16 +1,75 @@
 let player, numPlat, platforms, meat, campfire, idle, walksheet, jumpsheet, idleanimation, walkanimation, jumpanimation;
+let serialPDM;
+let sensors;
+let portName = 'COM4';
 let GRAVITY = 1;
 let LIFES = 5;
 let JUMP = -15;
+let joyVal = 0;
+let potentVal = 0;
 let canJump = false;
 let canDouble = false;
 let gameOver = false;
 let win =  false;
 let hasMeat = false;
+let music = false;
+let hasPressed = false;
 let xCord = [150, 550, 950, 1400, 1850, 1420, 1250, 655, 100, 2200, 2600, 3150, 3300, 2750, 2550, 2250, 2700, 3010, 3420, 3830, 4400];
 let yCord = [500, 450, 500, 500, 400, 200, 0, -50, 0, 625, 450, 400, 350, 125, 100, 50, -220, -210, -200, -190, -180];
 let isThick = [0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1];
 let isHalf =  [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1];
+let bgSynth = new Tone.DuoSynth({
+  "vibratoAmount"  : 0.5 ,
+	"vibratoRate"  : 5 ,
+	"harmonicity"  : 1.5 ,
+	"voice0"  : {
+		"volume"  : -10 ,
+		"portamento"  : 0 ,
+		"oscillator"  : {
+		    "type"  : "sine"
+		}  ,
+		"filterEnvelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}  ,
+		"envelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}
+	}  ,
+	"voice1"  : {
+		"volume"  : -20 ,
+		"portamento"  : 0 ,
+		"oscillator"  : {
+		    "type"  : "sine"
+		}  ,
+		"filterEnvelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}  ,
+		"envelope"  : {
+			"attack"  : 0.05 ,
+			"decay"  : 0 ,
+			"sustain"  : 1 ,
+			"release"  : 0.5
+		}
+  }
+});
+bgSynth.toDestination();
+
+var pattern = new Tone.Pattern(function(time, note){
+  bgSynth.triggerAttackRelease(note, '16n', time);
+}, ["G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
+    "G3", "D4", "B4", "A4", "B4", "D4","B4","D4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",
+    "G3", "E4", "C5", "B4", "C5", "E4","C5","E4",]);
 
 function preload() {
 	thickDirt = loadImage('Art/thickDirt.png');
@@ -45,8 +104,13 @@ function createLevel(){
   campfire = createSprite(4450, -285);
   campfire.addImage(cf);
   campfire.scale = 0.5;
+  serialPDM.transmit('lifes', LIFES); 
 }
 function setup() {
+  serialPDM = new PDMSerial(portName);
+  console.log(serialPDM.inData);
+  sensors = serialPDM.sensorData;
+  serialPDM.transmit('lifes',LIFES); 
   createCanvas(1200, 800);
   player = createSprite(40, 350, 80, 64);
   player.addAnimation('idle', idleanimation);
@@ -57,6 +121,10 @@ function setup() {
   platforms = new Group();
   createLevel();
   camera.position.y += 200;
+  Tone.start();
+  pattern.start(0.1);
+  Tone.Transport.bpm.value = 200;
+  Tone.Transport.start();
 }
 
 function respawn(){
@@ -70,6 +138,7 @@ function respawn(){
 function die(){
   updateSprites(false);
   LIFES--;
+  serialPDM.transmit('lifes', LIFES); 
   player.velocity.y = 0;
   if(LIFES > 0){
     respawn();
@@ -83,7 +152,12 @@ function die(){
 }
 
 function draw() {
-  background(0,181,226);
+  
+
+  joyVal = sensors.joystick;
+  potentVal = sensors.potent;
+  background( 0, 181 * potentVal, 226);
+  Tone.start();
   if(!gameOver && !win){
     canJump = false;
   
@@ -117,7 +191,7 @@ function draw() {
       player.velocity.y = JUMP;
       
     }
-    else if(keyDown('d')){
+    else if(keyDown('d') || joyVal == -1){
       player.velocity.x = 5;
       player.mirrorX(1);
       if(keyDown('space')){
@@ -127,7 +201,7 @@ function draw() {
         player.changeAnimation('walk');
       }
     }
-    else if(keyDown('a')){
+    else if(keyDown('a') || joyVal == 1){
       player.velocity.x = -5;
       player.mirrorX(-1);
       if(keyDown('space')){
@@ -142,7 +216,7 @@ function draw() {
     }
   }
   else{
-    textSize(250);
+    textSize(250); 
     textAlign(CENTER, CENTER);
     player.velocity.y = 0;
     fill('black')
