@@ -1,3 +1,4 @@
+//https://youtu.be/prnJ7OkAyiQ
 let player, numPlat, platforms, meat, campfire, idle, walksheet, jumpsheet, idleanimation, walkanimation, jumpanimation;
 let serialPDM;
 let sensors;
